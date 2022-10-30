@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  
+</head>
+
+<body style="background-color: rgba(50, 115, 220, 0.3);">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{{url_for('dashboard')}}">EC8</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse ml-4" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="{{url_for('dashboard')}}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link float-end" href="{{url_for('logout')}}">Logout</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+
+    <section class="container col-xs-1 center-block justify-content-end relative-top mt-5">
+
+        <div class="card shadow-lg p-3 mb-5 bg-body rounded mt-4 mb-5" style="max-width: 80vw; max-height: 350px;">
+            <div class="row g-0">
+                <div class="col-md-4" style="max-width: 20vw; text-align: center;">
+                    <img src="../static/src/user.png" style="max-width: 20vw; max-height: 200px;" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-header">
+                        <h5 class="card-title">Dados Básicos</h5>
+                    </div>
+                    <div class="card-body row">
+
+                        <div class="row center-block">
+                            <p class="card-text fw-bold block">Nome Civil</p>
+                            <p class="card-text block">{{func.name}}</p>
+                        </div>
+                        <div class="center-block">
+                            <p class="card-text fw-bold block">RE</p>
+                            <p class="card-text block">{{func.re}}</p>
+                        </div>
+                        <div class="center-block">
+                            <p class="card-text fw-bold block">Descrição do Funcionário</p>
+                            <p class="card-text block text-break" style="overflow-y: scroll;">{{func.descrition}}</p>
+                        </div>
+                        <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Cargos -->
+    <section class="container col-xs-1 center-block justify-content-end shadow-lg mb-5" style="background-color: rgb(255, 255, 255);">
+        <div class="card-header mb-4">
+            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Add Cargo</button>
+            <h3>Últimos Cargos</h3>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Cadastrar Novo Cargo</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="/addCargo/{{func.id}}" method="POST">
+                    <div class="mb-3">
+                      <label for="recipient-name" class="col-form-label">Nome:</label>
+                      <input type="text" class="form-control" name="name" id="name">
+                    </div><div class="mb-3">
+                        <label for="message-text" class="col-form-label">Data da Promoção:</label>
+                        <input type="date" name="dataPromocao" id="dataPromocao" placeholder="Data da Contratação" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                      <label for="message-text" class="col-form-label">Descrição:</label>
+                      <textarea class="form-control" name="descrition" id="descrition"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                      <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row justify-content-center" style="overflow-y: scroll; max-height:350px;">
+            {% for item in cargos |reverse%}
+            <div class="card mb-3 m-4 shadow-lg" style="max-width: 300px; max-height:250px; object-fit: cover; ">
+                <div class="row g-0">
+                    <form action="/deleteCargo/{{item.id}}/{{func.id}}" method="POST">
+                        <button class="btn close float-end" type="submit">X</button>
+                    </form>
+                    <div class="">
+                        <div class="card-header">
+                            <h5 class="card-title text-break">{{item.name}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <label for="recipient-name" class="col-form-label">Descrição:</label>
+                            <p class="card-text text-break" style="overflow-y: scroll; max-height:100px; width: 100%;">{{item.descrition}}</p>
+                            <p class="card-text"><small class="text-muted">{{item.dataPromocao}}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <!-- feedback --> 
+    <section class="container col-xs-1 center-block justify-content-end mt-4 mb-5 shadow-lg" style="background-color: rgb(255, 255, 255);">
+        <div class="card-header mb-4">
+            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@getbootstrap">Add Feedback / Metas</button>
+            <h3>Feedbacks e Metas</h3>
+        </div>
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel2">Cadastrar Novo Feedback / Metas</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="/addFeed/{{func.id}}" method="POST">
+                    <div class="mb-3">
+                      <label for="recipient-name" class="col-form-label">Feedback:</label>
+                      <textarea class="form-control" name="feedback" id="feedback"></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <label for="message-text" class="col-form-label">metas:</label>
+                      <textarea class="form-control" name="metas" id="metas"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                      <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row justify-content-center" style="overflow-y: scroll; max-height:350px;">
+            {% for item in feeds|reverse %}
+            <div class="card mb-3 m-4 shadow-lg" style="max-width: 400px; max-height:250px; object-fit: cover; ">
+                <div class="row g-0">
+                    <form action="/deleteFeed/{{item.id}}/{{func.id}}" method="POST">
+                        <button class="btn close float-end" type="submit">X</button>
+                    </form>
+                    <div class="">
+                        <div class="card-body">
+                            <label for="recipient-name" class="col-form-label">Feedback:</label>
+                            <p class="card-text text-break" style="overflow-y: scroll; max-height:100px; width: 100%;">{{item.feedback}}</p>
+                            <label for="recipient-name" class="col-form-label">Meta:</label>
+                            <p class="card-text text-break" style="overflow-y: scroll; max-height:100px; width: 100%;">{{item.metas}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+
+</html>
