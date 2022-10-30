@@ -17,7 +17,7 @@ Criar Ambiente virtual python:<br>
     <br>- [ ] cd /venv/Script/.Activate.ps1
     <br>- [ ] cd .. x2
     <br>- [ ] pip install -r .\requirements.txt
-  <br>- [ ] rodar main.py
+  <br>- [ ] rodar app.py
 ---<br>
 
 ## 📷 Vídeo de Apresentação
